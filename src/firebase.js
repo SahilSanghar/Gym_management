@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCA-qzJWQXsqjLVZElBpKUTg01GvA35s2I",
+    apiKey: process.env.REACT_APP_FIREBASE_KEY,
     authDomain: "gym-management-50506.firebaseapp.com",
     projectId: "gym-management-50506",
     storageBucket: "gym-management-50506.appspot.com",
