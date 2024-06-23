@@ -1,10 +1,20 @@
 import React from 'react'
-import { Box, Stack, Typography, Button } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom'
 import HeroBannerImage from '../assets/images/banner.png'
+import Navbar from './Navbar';
 
 const HeroBanner = () => {
+    const navigate = useNavigate();
+
+    const navigateGetStarted = () => {
+        navigate('/getStarted')
+    }
+
 return (
+<Box>
+    <Navbar />
     <Box sx={{
         mt: { lg: '212px', xs: '70px'},
         ml: { sm: '50px' }
@@ -21,8 +31,8 @@ return (
             Check out the most effective exercises
         </Typography>
 
-        <Button variant="contained" color='error' sx={{ backgroundColor: '#ff2625', padding: '10px'}}>
-            Explore Exercises
+        <Button variant="contained" color='error' onClick={navigateGetStarted} sx={{ backgroundColor: '#ff2625', padding: '10px'}}>
+            Get Started
         </Button>
 
         <Typography
@@ -40,6 +50,7 @@ return (
         <img src={HeroBannerImage} alt="banner"
         className="hero-banner-img" />
     </Box>
+</Box>
 )
 }
 
