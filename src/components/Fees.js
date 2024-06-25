@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, Typography, Grid } from '@mui/material';
 
-const FeePackage = () => {
+const Fees = () => {
     return (
         <Grid container spacing={3} justifyContent="center">
             {/* 3 Month Package */}
@@ -58,4 +58,4 @@ const FeePackage = () => {
     );
 };
 
-export default FeePackage;
+export default Fees;

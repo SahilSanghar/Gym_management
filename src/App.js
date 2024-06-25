@@ -16,7 +16,7 @@ import AdminDetailsForm from './components/AdminDetailsForm';
 import AdminMember from './components/AdminMember';
 import MemberDashboard from './components/MemberDashboard';
 import EditMemberDetails from './components/EditMemberDetails';
-import FeePackage from './components/FeePackage';
+import Fees from './components/Fees';
 
 const App = () => {
     return (
