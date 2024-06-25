@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { db } from '../firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
-import { Stack, Typography, Paper } from '@mui/material';
+import { Stack, Typography, Paper, Button } from '@mui/material';
 
 const MemberDashboard = () => {
     const { userId } = useParams();
+    const navigate = useNavigate(); // Initialize useNavigate
     const [member, setMember] = useState(null);
     const [error, setError] = useState('');
 
@@ -17,8 +18,7 @@ const MemberDashboard = () => {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    console.log(data)
-                    setMember(data); // Set the entire data object from Firestore
+                    setMember(data);
                 } else {
                     setError('No such document!');
                 }
@@ -29,6 +29,10 @@ const MemberDashboard = () => {
 
         fetchMember();
     }, [userId]);
+
+    const handleFeePackageClick = () => {
+        navigate(`/dashboard/${userId}/fee_package`); // Navigate to specified route using navigate
+    };
 
     if (error) {
         return <p style={{ color: 'red' }}>{error}</p>;
@@ -61,14 +65,26 @@ const MemberDashboard = () => {
                 <Typography fontSize="18px">
                     User Type: {member.userType}
                 </Typography>
-                {/* Display other member details */}
                 <Typography fontSize="18px">
-                    Name: {member.name} {/* Ensure 'name' is correctly spelled */}
+                    Name: {member.name}
                 </Typography>
                 <Typography fontSize="18px">
-                    Age: {member.age} {/* Ensure 'age' is correctly spelled */}
+                    Age: {member.age}
+                </Typography>
+                <Typography fontSize="18px">
+                    Fitness Goals: {member.fitnessGoals}
                 </Typography>
                 {/* Add other member details here */}
+
+                {/* Button for Fee Package */}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: '20px' }}
+                    onClick={handleFeePackageClick} // Attach onClick handler
+                >
+                    Fee Package
+                </Button>
             </Paper>
         </Stack>
     );

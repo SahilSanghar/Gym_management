@@ -22,12 +22,12 @@ const BasicDetailsForm = () => {
             throw new Error('User not authenticated');
         }
 
-        const userDocRef = doc(db, 'users', user.uid, 'fitnessDetails', 'details');
+        const userDocRef = doc(db, 'users', user.uid);
         await setDoc(userDocRef, {
         name,
         age,
         fitnessGoals,
-        });
+        }, { merge: true });
 
         console.log('User details saved');
         navigate('/dashboard'); // Redirect to dashboard after saving details

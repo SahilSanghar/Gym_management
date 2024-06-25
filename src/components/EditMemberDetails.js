@@ -19,15 +19,15 @@ const EditMemberDetails = () => {
         const fetchUserDetails = async () => {
             setLoading(true);
             try {
-                const userDocRef = doc(db, 'users', userId, 'fitnessDetails', 'details');
+                const userDocRef = doc(db, 'users', userId);
                 const userDoc = await getDoc(userDocRef);
 
                 if (userDoc.exists()) {
                     const data = userDoc.data();
                     setUserDetails(data);
-                    setName(data.name);
-                    setAge(data.age);
-                    setFitnessGoals(data.fitnessGoals);
+                    setName(data.name || '');
+                    setAge(data.age || '');
+                    setFitnessGoals(data.fitnessGoals || '');
                 } else {
                     setError('No fitness details found.');
                 }
@@ -45,10 +45,10 @@ const EditMemberDetails = () => {
         e.preventDefault();
         setError('');
         try {
-            const userDocRef = doc(db, 'users', userId, 'fitnessDetails');
+            const userDocRef = doc(db, 'users', userId);
             const updatedDetails = { name, age, fitnessGoals };
 
-            await setDoc(userDocRef, { details: updatedDetails });
+            await setDoc(userDocRef, updatedDetails, { merge: true });
 
             navigate('/admin/member');
         } catch (err) {

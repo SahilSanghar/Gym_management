@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 
@@ -16,28 +16,30 @@ import AdminDetailsForm from './components/AdminDetailsForm';
 import AdminMember from './components/AdminMember';
 import MemberDashboard from './components/MemberDashboard';
 import EditMemberDetails from './components/EditMemberDetails';
+import FeePackage from './components/FeePackage';
 
 const App = () => {
-return (
-    <Box width="400px" sx={{ width: { xl: '1488px' }}} m="auto" >
-        {/* <Navbar /> */}
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/exercise/:id" element={<ExerciseDetail />} />
-            <Route path="/getStarted" element={<GetStarted />} />
-            <Route path="/Admin" element={<AuthAdmin />} />
-            <Route path="/Member" element={<AuthMember />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/:userId" element={<MemberDashboard />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/basic-details" element={<BasicDetailsForm />} />
-            <Route path="/Admin-details" element={<AdminDetailsForm />} />
-            <Route path="/admin/member" element={<AdminMember />} />
-            <Route path="/edit-member/:userId" element={<EditMemberDetails />} />
-        </Routes>
-        <Footer />
-    </Box>
-)
-}
+    return (
+        <Box sx={{ width: '100%', maxWidth: '1488px', margin: 'auto' }}>
+            {/* <Navbar /> */}
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/exercise/:id" element={<ExerciseDetail />} />
+                <Route path="/getStarted" element={<GetStarted />} />
+                <Route path="/Admin" element={<AuthAdmin />} />
+                <Route path="/Member" element={<AuthMember />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/:userId" element={<MemberDashboard />} />
+                <Route path="/dashboard/:userId/fee_package" element={<FeePackage />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/basic-details" element={<BasicDetailsForm />} />
+                <Route path="/admin-details" element={<AdminDetailsForm />} />
+                <Route path="/admin/member" element={<AdminMember />} />
+                <Route path="/edit-member/:userId" element={<EditMemberDetails />} />
+            </Routes>
+            <Footer />
+        </Box>
+    );
+};
 
-export default App
+export default App;
