@@ -1,15 +1,16 @@
-// src/components/AdminMember.js
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, query, where, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { Stack, Typography, Paper, IconButton } from '@mui/material';
+import { Stack, Typography, Paper, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 const AdminMember = () => {
     const [members, setMembers] = useState([]);
     const [error, setError] = useState('');
+    const [showUpdateDelete, setShowUpdateDelete] = useState(false); // State to manage showing individual update/delete buttons
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,9 +44,18 @@ const AdminMember = () => {
         try {
             await deleteDoc(doc(db, 'users', userId));
             setMembers(members.filter(member => member.id !== userId));
+            navigate('/admin/member');
         } catch (err) {
             setError(err.message);
         }
+    };
+
+    const handleAddMemberClick = () => {
+        navigate('/admin/member/add_member');
+    };
+
+    const toggleUpdateDelete = () => {
+        setShowUpdateDelete(!showUpdateDelete);
     };
 
     return (
@@ -67,27 +77,43 @@ const AdminMember = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {members.map((member) => (
                 <Paper key={member.id} elevation={3} sx={{ padding: '20px', width: '80%', cursor: 'pointer' }}>
-                    <div onClick={() => handlePaperClick(member.id)}>
+                    <Stack onClick={() => handlePaperClick(member.id)} display='inline-list-item'>
                         <Typography fontSize="20px" fontWeight="bold">
-                            Email: {member.email}
+                            Email <br />
+                            {member.email}
                         </Typography>
-                        <Typography fontSize="18px">
+                        {/* <Typography fontSize="18px">
                             User Type: {member.userType}
-                        </Typography>
+                        </Typography> */}
+                        {showUpdateDelete && (
+                            <>
+                                <Button onClick={() => handleEditClick(member.id)} color="error" sx={{ marginLeft: '800px', marginBottom: '20px'}}>
+                                    <EditIcon />
+                                </Button>
+                                <Button onClick={() => handleDeleteClick(member.id)} color="error" sx={{marginBottom: '20px'}}>
+                                    <DeleteIcon />
+                                </Button>
+                            </>
+                        )}
                         {/* Add other member details here */}
-                    </div>
-                    <div>
-                        <IconButton onClick={() => handleEditClick(member.id)} color="primary">
-                            <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleDeleteClick(member.id)} color="secondary">
-                            <DeleteIcon />
-                        </IconButton>
-                    </div>
-                    {/* Add other member details here */}
+                    </Stack>
                 </Paper>
             ))}
+        <Stack display='inline-list-item' marginRight='865px'>
+            <Button onClick={handleAddMemberClick} variant="contained" color='error' sx={{ backgroundColor: '#ff2625', color: 'white', alignSelf: 'flex-start' }}>
+                <AddIcon />
+                <Typography>
+                    Add member
+                </Typography>
+            </Button>
+            <Button onClick={toggleUpdateDelete} variant="contained" color='error' sx={{ backgroundColor: '#ff2625', color: 'white', alignSelf: 'flex-start', marginLeft: '20px' }}>
+                <EditIcon /> &nbsp;
+                <Typography>
+                    Update
+                </Typography>
+            </Button>
         </Stack>
+    </Stack>
     );
 };
 

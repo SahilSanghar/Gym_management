@@ -53,7 +53,7 @@ const AssignFeePackage = () => {
                 value={packageId}
                 onChange={(e) => setPackageId(e.target.value)}
               />
-              <Button variant="contained" color="primary" type="submit">
+              <Button variant="contained" color="error" type="submit">
                 Assign Package
               </Button>
             </Box>

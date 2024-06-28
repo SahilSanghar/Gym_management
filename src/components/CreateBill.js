@@ -1,77 +1,67 @@
-// src/components/CreateBill.js
-import React, { useState, useEffect } from 'react';
-import { db } from '../firebaseConfig';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { Box, Button, Container, TextField, Typography, List, ListItem, ListItemText } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { auth, db } from '../firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
+import { Stack, Typography } from '@mui/material';
 
-const CreateBill = () => {
-    const [memberId, setMemberId] = useState('');
-    const [amount, setAmount] = useState('');
-    const [bills, setBills] = useState([]);
+const CreateBills = () => {
+    const { userId } = useParams(); // Extract userId from route params
+    const [userData, setUserData] = useState(null);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-    const fetchBills = async () => {
-        const querySnapshot = await getDocs(collection(db, 'bills'));
-        setBills(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    };
+        const fetchUserData = async () => {
+            setError('');
+            try {
+                const userDocRef = doc(db, 'users', userId); // Use userId to fetch specific user document
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    setUserData(docSnap.data());
+                } else {
+                    setError('No such document!');
+                }
+            } catch (err) {
+                setError(err.message);
+            }
+        };
 
-    fetchBills();
-    }, []);
+        fetchUserData();
+    }, [userId]);
 
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        const docRef = await addDoc(collection(db, 'bills'), {
-        memberId,
-        amount
-        });
-        setBills([...bills, { id: docRef.id, memberId, amount }]);
-        setMemberId('');
-        setAmount('');
-    } catch (e) {
-        console.error('Error adding document: ', e);
+    if (error) {
+        return <p style={{ color: 'red' }}>{error}</p>;
     }
-    };
+
+    if (!userData) {
+        return <p>Loading...</p>;
+    }
 
     return (
-    <Container>
-        <Box sx={{ mt: 4, mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-            Create Bill
-        </Typography>
-        <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextField
-                label="Member ID"
-                variant="outlined"
-                value={memberId}
-                onChange={(e) => setMemberId(e.target.value)}
-                />
-                <TextField
-                label="Amount"
-                variant="outlined"
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                />
-                <Button variant="contained" color="primary" type="submit">
-                Create Bill
-                </Button>
-            </Box>
-        </form>
-            <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
-            Bills
+        <Stack
+            justifyContent="center"
+            sx={{
+                backgroundColor: '#fff',
+                borderBottomLeftRadius: '20px',
+                width: '470px',
+                padding: '20px',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                margin: '100px auto',
+                gap: '20px',
+                textAlign: 'left',
+            }}
+        >
+            <Typography variant="h4" color="textPrimary" textAlign="start" gutterBottom>
+                Bill
             </Typography>
-            <List>
-            {bills.map((bill) => (
-                <ListItem key={bill.id}>
-                <ListItemText primary={`Member ID: ${bill.memberId}, Amount: ${bill.amount}`} />
-                </ListItem>
-            ))}
-            </List>
-        </Box>
-    </Container>
+            <Stack spacing={2} paddingLeft={5}>
+                    <Typography variant="body1">Name <Typography variant='span' paddingLeft='235px'>{userData.name}</Typography></Typography>
+                    <Typography variant="body1">Age <Typography variant='span' paddingLeft='250px'>{userData.age} yrs</Typography></Typography>
+                    <Typography variant="body1">Fitness Goals <Typography variant='span' paddingLeft='180px'>{userData.fitnessGoals}</Typography></Typography>
+                    <Typography variant="body1">Selected Package <Typography variant='span' paddingLeft='150px'>{userData.selectedPackage}</Typography></Typography>
+                    <Typography variant="body1">Price <Typography variant='span' paddingLeft='240px'>{userData.price}</Typography></Typography>
+                </Stack>
+        </Stack>
     );
 };
 
-export default CreateBill;
+export default CreateBills;

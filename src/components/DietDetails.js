@@ -53,7 +53,7 @@ const DietDetails = () => {
                 value={diet}
                 onChange={(e) => setDiet(e.target.value)}
                 />
-                <Button variant="contained" color="primary" type="submit">
+                <Button variant="contained" color="error" type="submit">
                     Add Diet
                 </Button>
             </Box>

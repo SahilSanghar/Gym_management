@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { Stack, Typography, Paper, Button } from '@mui/material';
 
 const MemberDashboard = () => {
-    const { userId } = useParams();
-    const navigate = useNavigate(); // Initialize useNavigate
+    const { userId } = useParams(); // Extract userId from route params
+    const navigate = useNavigate();
     const [member, setMember] = useState(null);
     const [error, setError] = useState('');
 
@@ -14,7 +14,7 @@ const MemberDashboard = () => {
         const fetchMember = async () => {
             setError('');
             try {
-                const docRef = doc(db, 'users', userId);
+                const docRef = doc(db, 'users', userId); // Use userId to fetch specific user document
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -30,8 +30,8 @@ const MemberDashboard = () => {
         fetchMember();
     }, [userId]);
 
-    const handleFeePackageClick = () => {
-        navigate(`/dashboard/${userId}/fee_package`); // Navigate to specified route using navigate
+    const handleViewBillClick = () => {
+        navigate(`/dashboard/${userId}/bill`); // Navigate to the bill route with userId
     };
 
     if (error) {
@@ -56,14 +56,11 @@ const MemberDashboard = () => {
             }}
         >
             <Typography fontSize="32px" fontWeight="bold" color="#3A1212" textTransform="capitalize">
-                Member Dashboard
+                Member Details
             </Typography>
-            <Paper elevation={3} sx={{ padding: '20px', width: '80%' }}>
+            <Paper elevation={3} sx={{ padding: '20px', width: '30%' }}>
                 <Typography fontSize="20px" fontWeight="bold">
                     Email: {member.email}
-                </Typography>
-                <Typography fontSize="18px">
-                    User Type: {member.userType}
                 </Typography>
                 <Typography fontSize="18px">
                     Name: {member.name}
@@ -76,14 +73,14 @@ const MemberDashboard = () => {
                 </Typography>
                 {/* Add other member details here */}
 
-                {/* Button for Fee Package */}
+                {/* Button for View Bill */}
                 <Button
                     variant="contained"
-                    color="primary"
+                    color="error"
                     style={{ marginTop: '20px' }}
-                    onClick={handleFeePackageClick} // Attach onClick handler
+                    onClick={handleViewBillClick} // Attach onClick handler
                 >
-                    Fee Package
+                    View Bill
                 </Button>
             </Paper>
         </Stack>

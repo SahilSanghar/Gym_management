@@ -23,6 +23,8 @@ import AssignNotification from './components/AssignNotification';
 import ExportReports from './components/ExportReports';
 import SupplementStore from './components/SupplementStore';
 import DietDetails from './components/DietDetails';
+import ViewReport from './components/ViewReport';
+import RegisterMember from './components/RegisterMember';
 
 const App = () => {
     return (
@@ -36,15 +38,17 @@ const App = () => {
                 <Route path="/Member" element={<AuthMember />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/dashboard/:userId" element={<MemberDashboard />} />
-                <Route path="/dashboard/:userId/fee_package" element={<Fees />} />
+                <Route path="/dashboard/:userId/bill" element={<CreateBill />} />
+                <Route path="/fee_package" element={<Fees />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/basic-details" element={<BasicDetailsForm />} />
                 <Route path="/admin-details" element={<AdminDetailsForm />} />
                 <Route path="/admin/member" element={<AdminMember />} />
+                <Route path="/admin/member/add_member" element={<RegisterMember />} />
                 <Route path="/edit-member/:userId" element={<EditMemberDetails />} />
 
                 {/* Testing Routes */}
-                <Route path="/create-bill" element={<CreateBill />} />
+                {/* <Route path="/bill" element={<CreateBill />} /> */}
                 <Route path="/assign-fee-package" element={<AssignFeePackage />} />
                 <Route path="/assign-notification" element={<AssignNotification />} />
                 <Route path="/export-reports" element={<ExportReports />} />

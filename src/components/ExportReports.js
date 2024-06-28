@@ -32,7 +32,7 @@ const ExportReports = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Export Reports
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleExport}>
+            <Button variant="contained" color="error" onClick={handleExport}>
                 Export Reports
             </Button>
         </Box>

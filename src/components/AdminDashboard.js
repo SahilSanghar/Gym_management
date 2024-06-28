@@ -124,7 +124,7 @@ const AdminDashboard = () => {
                     <Button onClick={handleEdit} variant="contained" color='error' sx={{ backgroundColor: '#ff2625', padding: '5px 62px', marginTop: '20px' }}>
                         Edit Details
                     </Button>
-                    <Button onClick={handleCont} variant="contained" color='error' sx={{ backgroundColor: '#ff2625', padding: '5px 62px', marginTop: '20px' }}>
+                    <Button onClick={handleCont} variant="contained" color='error' sx={{ backgroundColor: '#ff2625', padding: '5px 62px', marginTop: '0px', marginBottom: '15px' }}>
                         Continue
                     </Button>
                 </>

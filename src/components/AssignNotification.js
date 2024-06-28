@@ -53,7 +53,7 @@ const AssignNotification = () => {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button variant="contained" color="error" type="submit">
                         Assign Notification
                     </Button>
                 </Box>

@@ -1,11 +1,12 @@
 // src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebaseConfig';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Stack, Typography, Button } from '@mui/material';
 
 const Dashboard = () => {
+    const { userId } = useParams(); 
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -83,6 +84,10 @@ const Dashboard = () => {
         }
     };
 
+    const handleViewBillClick = () => {
+        navigate(`/dashboard/${userId}/bill`); // Navigate to the bill route with userId
+    };
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -117,6 +122,14 @@ const Dashboard = () => {
                     <Button onClick={handleEdit} variant="contained" color='error' sx={{ backgroundColor: '#ff2625', padding: '5px 62px', marginTop: '20px' }}>
                         Edit Details
                     </Button>
+                    <Button
+                    variant="contained"
+                    color="error"
+                    style={{ marginTop: '20px' }}
+                    onClick={handleViewBillClick} // Attach onClick handler
+                >
+                    View Bill
+                </Button>
                     {/* Add more fitness details as needed */}
                 </>
             ) : (

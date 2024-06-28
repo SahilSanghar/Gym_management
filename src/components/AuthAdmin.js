@@ -42,7 +42,7 @@ const Admin = () => {
             await signInWithEmailAndPassword(auth, email, password);
             console.log('User logged in');
             // Redirect to admin dashboard
-            navigate('/Admin-dashboard');
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }

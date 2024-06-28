@@ -54,7 +54,7 @@ const SupplementStore = () => {
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                     />
-                <Button variant="contained" color="primary" type="submit">
+                <Button variant="contained" color="error" type="submit">
                     Add Supplement
                 </Button>
             </Box>
