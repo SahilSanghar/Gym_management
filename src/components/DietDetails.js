@@ -1,75 +1,109 @@
-// src/components/DietDetails.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { db } from '../firebaseConfig';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { Box, Button, Container, TextField, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { doc, getDoc } from 'firebase/firestore';
+import { Stack, Typography } from '@mui/material';
 
 const DietDetails = () => {
-    const [memberId, setMemberId] = useState('');
-    const [diet, setDiet] = useState('');
-    const [diets, setDiets] = useState([]);
+    const { userId } = useParams(); // Extract userId from route params
+    const [userData, setUserData] = useState(null);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-    const fetchDiets = async () => {
-        const querySnapshot = await getDocs(collection(db, 'diets'));
-        setDiets(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    };
+        const fetchUserData = async () => {
+            setError('');
+            try {
+                const userDocRef = doc(db, 'users', userId); // Use userId to fetch specific user document
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    setUserData(docSnap.data());
+                } else {
+                    setError('No such document!');
+                }
+            } catch (err) {
+                setError(err.message);
+            }
+        };
 
-    fetchDiets();
-    }, []);
+        fetchUserData();
+    }, [userId]);
 
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        const docRef = await addDoc(collection(db, 'diets'), {
-        memberId,
-        diet
-        });
-        setDiets([...diets, { id: docRef.id, memberId, diet }]);
-        setMemberId('');
-        setDiet('');
-    } catch (e) {
-        console.error('Error adding document: ', e);
+    if (error) {
+        return <p style={{ color: 'red' }}>{error}</p>;
     }
+
+    if (!userData) {
+        return <p>Loading...</p>;
+    }
+
+    const renderDietDetails = (diet) => {
+        switch (diet) {
+            case 'Non-Vegetarian':
+                return (
+                    <Stack>
+                    <Typography variant="h6"><b>Breakfast:</b> A boiled egg with brown bread or an omelette with very little oil</Typography>
+                    <Typography variant="h6"><b>Lunch:</b> A savoury lemon chicken sandwich</Typography>
+                    <Typography variant="h6"><b>Dinner:</b> Malabar fish curry with brown rice</Typography>
+                    </Stack>
+                );
+            case 'Eggitarian':
+                return (
+                    <Stack>
+                        <Typography variant="h6"><b>Breakfast:</b> scrambled eggs with tomatoes, garlic, and mushrooms</Typography>
+                        <Typography variant="h6"><b>Lunch:</b> zucchini boats stuffed with spiced lentils, veggies, and feta with a side of tomato soup</Typography>
+                        <Typography variant="h6"><b>Dinner:</b> chickpea curry with basmati rice</Typography>
+                    </Stack>
+                );
+            case 'Vegetarian':
+                return (
+                    <Stack>
+                        <Typography variant="h6"><b>Breakfast:</b> Oatmeal for the kiddo and an oatmeal smoothie for us</Typography>
+                        <Typography variant="h6"><b>Lunch:</b> Tamarind rice with fryums and cabbage stir fry</Typography>
+                        <Typography variant="h6"><b>Dinner:</b> Millet pongal with coconut chutney</Typography>
+                    </Stack>
+                );
+            case 'Vegan':
+                return (
+                    <Stack>
+                        <Typography variant="h6"><b>Breakfast:</b> vegan breakfast sandwich with tofu, lettuce, tomato, turmeric, and a plant-milk chai latte</Typography>
+                        <Typography variant="h6"><b>Lunch:</b> spiralized zucchini and quinoa salad with peanut dressing</Typography>
+                        <Typography variant="h6"><b>Dinner:</b> red lentil and spinach dal over wild rice</Typography>
+                    </Stack>
+                );
+            case 'Keto':
+                return (
+                    <Stack>
+                        <Typography variant="h6"><b>Breakfast:</b> veggie and egg muffins with tomatoes</Typography>
+                        <Typography variant="h6"><b>Lunch:</b> chicken salad with olive oil, feta cheese, olives, and a side salad</Typography>
+                        <Typography variant="h6"><b>Dinner:</b> salmon with asparagus cooked in butter</Typography>
+                    </Stack>
+                );
+            default:
+                return <Typography>No diet selected</Typography>;
+        }
     };
 
     return (
-    <Container>
-        <Box sx={{ mt: 4, mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-            Diet Details
-        </Typography>
-        <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextField
-                label="Member ID"
-                variant="outlined"
-                value={memberId}
-                onChange={(e) => setMemberId(e.target.value)}
-                />
-                <TextField
-                label="Diet Details"
-                variant="outlined"
-                value={diet}
-                onChange={(e) => setDiet(e.target.value)}
-                />
-                <Button variant="contained" color="error" type="submit">
-                    Add Diet
-                </Button>
-            </Box>
-        </form>
-        <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
-            Diets
-        </Typography>
-            <List>
-                {diets.map((diet) => (
-                <ListItem key={diet.id}>
-                    <ListItemText primary={`Member ID: ${diet.memberId}, Diet: ${diet.diet}`} />
-                </ListItem>
-                ))}
-            </List>
-        </Box>
-    </Container>
+        <Stack
+            justifyContent="center"
+            sx={{
+                backgroundColor: '#fff',
+                borderRadius: '20px',
+                width: '470px',
+                padding: '20px',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                margin: '100px auto',
+                gap: '20px',
+                textAlign: 'left',
+            }}
+        >
+            <Typography variant="h4" color="textPrimary" textAlign="start" fontWeight='Bold' gutterBottom>
+                Diet
+            </Typography>
+            <Stack spacing={2} paddingLeft={5}>
+                {renderDietDetails(userData.selectedDiet)}
+            </Stack>
+        </Stack>
     );
 };
 

@@ -34,6 +34,10 @@ const MemberDashboard = () => {
         navigate(`/dashboard/${userId}/bill`); // Navigate to the bill route with userId
     };
 
+    const handleViewDiet = () => {
+        navigate(`/dashboard/${userId}/diet`); // Navigate to the bill route with userId
+    };
+
     if (error) {
         return <p style={{ color: 'red' }}>{error}</p>;
     }
@@ -81,6 +85,14 @@ const MemberDashboard = () => {
                     onClick={handleViewBillClick} // Attach onClick handler
                 >
                     View Bill
+                </Button>
+                <Button
+                    variant="contained"
+                    color="error"
+                    style={{ marginTop: '20px', marginLeft: '20px' }}
+                    onClick={handleViewDiet} // Attach onClick handler
+                >
+                    View Diet
                 </Button>
             </Paper>
         </Stack>

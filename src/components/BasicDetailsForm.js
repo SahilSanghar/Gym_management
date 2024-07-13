@@ -9,11 +9,16 @@ const BasicDetailsForm = () => {
     const [age, setAge] = useState('');
     const [fitnessGoals, setFitnessGoals] = useState('');
     const [selectedPackage, setSelectedPackage] = useState('');
+    const [selectedDiet, setSelectedDiet] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handlePackageSelect = (value) => {
         setSelectedPackage(value);
+    };
+
+    const handleDietSelect = (value) => {
+        setSelectedDiet(value);
     };
 
     const handleSubmit = async (e) => {
@@ -34,6 +39,7 @@ const BasicDetailsForm = () => {
                 age,
                 fitnessGoals,
                 selectedPackage,
+                selectedDiet,
                 price, // Save price to Firestore
             }, { merge: true });
 
@@ -65,7 +71,7 @@ const BasicDetailsForm = () => {
                 backgroundColor: '#fff',
                 borderBottomLeftRadius: '20px',
                 width: '470px',
-                height: '520px', // Increased height to accommodate additional Typography
+                height: '600px', // Increased height to accommodate additional Typography
                 cursor: 'pointer',
                 gap: '20px',
                 margin: '100px auto', // Center align horizontally
@@ -124,6 +130,25 @@ const BasicDetailsForm = () => {
                         <MenuItem value="Starter">Starter</MenuItem>
                         <MenuItem value="Premium">Premium</MenuItem>
                         <MenuItem value="Elite">Elite</MenuItem>
+                    </TextField>
+                </Stack>
+                <Stack>
+                    <label htmlFor="selectedDiet" style={{ fontSize: '20px', marginTop: '10px' }}>Select Diet:</label>
+                    <TextField
+                        id="selectedDiet"
+                        select
+                        value={selectedDiet}
+                        onChange={(e) => handleDietSelect(e.target.value)}
+                        variant="outlined"
+                        fullWidth
+                        style={{ marginTop: '5px' }}
+                        required
+                    >
+                        <MenuItem value="Non-Vegetarian">Non-Vegetarian</MenuItem>
+                        <MenuItem value="Eggitarian">Eggitarian</MenuItem>
+                        <MenuItem value="Vegetarian">Vegetarian</MenuItem>
+                        <MenuItem value="Vegan">Vegan</MenuItem>
+                        <MenuItem value="Keto">Keto</MenuItem>
                     </TextField>
                 </Stack>
                 {/* Display price based on selected package */}

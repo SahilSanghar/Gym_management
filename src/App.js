@@ -38,6 +38,7 @@ const App = () => {
                 <Route path="/Member" element={<AuthMember />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/dashboard/:userId" element={<MemberDashboard />} />
+                <Route path="/dashboard/:userId/diet" element={<DietDetails />} />
                 <Route path="/dashboard/:userId/bill" element={<CreateBill />} />
                 <Route path="/fee_package" element={<Fees />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -53,7 +54,7 @@ const App = () => {
                 <Route path="/assign-notification" element={<AssignNotification />} />
                 <Route path="/export-reports" element={<ExportReports />} />
                 <Route path="/supplement-store" element={<SupplementStore />} />
-                <Route path="/diet-details" element={<DietDetails />} />
+                {/* <Route path="/diet-details" element={<DietDetails />} /> */}
             </Routes>
             <Footer />
         </Box>
