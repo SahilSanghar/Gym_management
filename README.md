@@ -37,8 +37,8 @@ The Gym Management System is designed to facilitate efficient management of gym 
 - Maintainability: Modular architecture with clear separation of frontend and backend logic.
 - Portability: Cross-platform compatibility ensured through React.js and Firebase.
 
-**Deployment
-**
+**Deployment**
+
 The application is deployed using vercel, ensuring:
 
 - Scalability: Handles concurrent users and real-time updates seamlessly.
